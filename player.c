@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
 		read_shm(line,shm);
 		if(strcmp(line,"ready")==0) break;
 	}
+	printf("%d recieve: %s\n", key,line);
 	*shm=' ';
 	get_new_number(&num,command,1,MAX_NUM);
 	write_command_in_shm(command,shm);
@@ -53,18 +54,19 @@ int main(int argc, char *argv[])
 	{
 		// while(*shm==' ')sleep(1);
 		read_shm(line,shm);
-		printf("%d recieve: %s\n", key,line);
 		strcpy(command," ");
 		if(strcmp(line,"down") == 0)
 		{
 			*shm=' ';
 			max_num=num;
+			printf("%d recieve: %s\n", key,line);
 			get_new_number(&num,command,min_num,max_num);
 			write_command_in_shm(command,shm);
 		}else if(strcmp(line,"up") == 0)
 		{
 			*shm=' ';
 			min_num=num;
+			printf("%d recieve: %s\n", key,line);
 			get_new_number(&num,command,min_num,max_num);
 			write_command_in_shm(command,shm);
 		}else if(strcmp(line,"win") == 0)
@@ -73,6 +75,7 @@ int main(int argc, char *argv[])
 			printf("I won!\n");
 		}else if(strcmp(line,"kill") == 0)
 		{
+			printf("%d recieve: %s\n", key,line);
 			break;
 		}
 		

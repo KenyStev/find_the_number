@@ -91,6 +91,7 @@ void* playing(void*match)
 {
 	int recieved_num;
 	int shmid_p1,shmid_p2;
+	pid_t c_player;
 	char *shm_p1,*shm_p2, *c_turn;
 	char *command = "nada";
 	char *args[10];
@@ -109,16 +110,16 @@ void* playing(void*match)
 		if(x->turn==0)
 		{
 			c_turn = shm_p1;
+			c_player = x->player1;
 		}else{
 			c_turn = shm_p2;
+			c_player = x->player2;
 		}
 		sleep(1);
 		while(*c_turn == ' ')sleep(1);
 		read_shm(line,c_turn);
-		printf("server recieve: %s\n", line);
+		printf("%d sends to server: %s\n", c_player, line);
 		parse(line,args);
-		printf("a0: %s\n", args[0]);
-		printf("a1: %s\n", args[1]);
 
 		if(strcmp(args[0],"num") == 0)
 			recieved_num = atoi(args[1]);
@@ -133,7 +134,7 @@ void* playing(void*match)
 		if(strcmp(command,"win") == 0)
 		{
 			printf("Win: %d\n", (x->turn==0)?x->player1:x->player2);
-			sleep(1);
+			sleep(3);
 			break;
 		}
 
