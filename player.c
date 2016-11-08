@@ -1,15 +1,3 @@
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <stdio.h>
 #include "util.c"
 
 #define SHMSZ     128
@@ -18,7 +6,7 @@ pid_t pid_server;
 
 int num, max_num=MAX_NUM, min_num=1;
 int shmid, shmid_parent;
-key_t key, key_parent = 111111111111111;
+key_t key, key_parent = KEY_P;
 char *shm, *s, *shm_parent;
 char *my_pid;
 char line[1024];
@@ -27,15 +15,15 @@ void get_new_number(int*,char*command, int min, int max);
 
 int main(int argc, char *argv[])
 {
-	if (strcmp(argv[1],"exit")==0)
+	if (argc>1 && strcmp(argv[1],"exit")==0)
 	{
 		locate_shm(&shmid_parent,&shm_parent,key_parent);
 		write_command_in_shm(argv[1],shm_parent);
-		sleep(4);
+		sleep(1);
 		free_shm(shm,shmid);
 		return 0;
 	}
-	
+
 	key = getpid();
 	srand(key);
 	create_shm(&shmid,&shm,key);

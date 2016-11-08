@@ -1,15 +1,3 @@
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <pthread.h>
 #include "util.c"
 
 #define SHMSZ     128
@@ -29,7 +17,7 @@ typedef struct match
 } match;
 
 int cant_players=0;
-int *players[1024];
+int players[2];
 
 void add_player(char**argU);
 void create_match();
@@ -39,7 +27,7 @@ void* playing(void*);
 int main(int argc, char *argv[])
 {
 	srand(getpid());
-	key = 111111111111111;
+	key = KEY_P;
 	printf("My pid: %d\n", key);
 	create_shm(&shmid,&shm,key);
 	char *line = malloc(sizeof(char)*SHMSZ);
@@ -59,6 +47,7 @@ int main(int argc, char *argv[])
 			if(cant_players>0 && cant_players%2==0)
 			{
 				create_match(players[cant_players-1],players[cant_players-2]);
+				cant_players=0;
 			}
 		}else if(strcmp(argU[0],"exit") == 0)
 		{
