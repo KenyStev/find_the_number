@@ -60,6 +60,10 @@ int main(int argc, char *argv[])
 			{
 				create_match(players[cant_players-1],players[cant_players-2]);
 			}
+		}else if(strcmp(argU[0],"exit") == 0)
+		{
+			free_shm(shm,shmid);
+			break;
 		}
 	}
 

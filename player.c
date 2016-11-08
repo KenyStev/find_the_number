@@ -27,6 +27,15 @@ void get_new_number(int*,char*command, int min, int max);
 
 int main(int argc, char *argv[])
 {
+	if (strcmp(argv[1],"exit")==0)
+	{
+		locate_shm(&shmid_parent,&shm_parent,key_parent);
+		write_command_in_shm(argv[1],shm_parent);
+		sleep(4);
+		free_shm(shm,shmid);
+		return 0;
+	}
+	
 	key = getpid();
 	srand(key);
 	create_shm(&shmid,&shm,key);
